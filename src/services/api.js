@@ -2,6 +2,7 @@ import axios from "axios";
 
 const API_URL = "https://retoolapi.dev/2mxXSs";
 const AVAILABILITY_API_URL = "https://retoolapi.dev/xWbMVq";
+const APPOINTMENTS_API_URL = "https://retoolapi.dev/heDbAg";
 
 export const getDoctors = async () => {
   const response = await axios.get(`${API_URL}/doctors`);
@@ -23,4 +24,13 @@ export const getDoctorAvailability = async (doctorId) => {
   return response.data.filter(
     (item) => String(item.doctorId) === String(doctorId),
   );
+};
+
+export const createAppointment = async (appointmentData) => {
+  const response = await axios.post(
+    `${APPOINTMENTS_API_URL}/appointments`,
+    appointmentData,
+  );
+
+  return response.data;
 };
