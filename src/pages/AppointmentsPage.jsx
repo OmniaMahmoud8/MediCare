@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router";
 import { useForm } from "react-hook-form";
 import AppointmentCard from "../components/AppointmentCard";
 import {
@@ -16,8 +17,10 @@ import {
   CardHeader,
   CardTitle,
 } from "../components/ui/card";
+import useAppStore from "../stores/useAppStore";
 
 function AppointmentsPage() {
+  const currentPatient = useAppStore((state) => state.currentPatient);
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -41,7 +44,18 @@ function AppointmentsPage() {
 
       const data = await getAppointments();
 
-      setAppointments(data);
+      if (!currentPatient) {
+        setAppointments([]);
+        return;
+      }
+
+      const patientAppointments = data.filter(
+        (appointment) =>
+          appointment.email?.trim().toLowerCase() ===
+          currentPatient.email.trim().toLowerCase(),
+      );
+
+      setAppointments(patientAppointments);
     } catch {
       setError("Failed to load appointments. Please try again.");
     } finally {
@@ -52,9 +66,21 @@ function AppointmentsPage() {
   useEffect(() => {
     const loadAppointments = async () => {
       try {
+        setError("");
         const data = await getAppointments();
 
-        setAppointments(data);
+        if (!currentPatient) {
+          setAppointments([]);
+          return;
+        }
+
+        const patientAppointments = data.filter(
+          (appointment) =>
+            appointment.email?.trim().toLowerCase() ===
+            currentPatient.email.trim().toLowerCase(),
+        );
+
+        setAppointments(patientAppointments);
       } catch {
         setError("Failed to load appointments. Please try again.");
       } finally {
@@ -63,7 +89,7 @@ function AppointmentsPage() {
     };
 
     loadAppointments();
-  }, []);
+  }, [currentPatient]);
 
   // Edit Appointment
 
@@ -168,6 +194,36 @@ function AppointmentsPage() {
     );
   }
 
+  // No Profile
+
+  if (!currentPatient) {
+    return (
+      <section className="flex min-h-[60vh] items-center justify-center px-4">
+        <div className="max-w-lg rounded-2xl bg-white p-8 text-center shadow-sm">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#EBE3D1] text-2xl">
+            👤
+          </div>
+
+          <h1 className="mt-5 text-2xl font-bold text-[#5E2325]">
+            Create Your Profile First
+          </h1>
+
+          <p className="mt-3 leading-7 text-[#284351]/70">
+            Please create your profile before viewing your appointments. Your
+            email is used to connect your bookings to your profile.
+          </p>
+
+          <Link
+            to="/profile"
+            className="mt-6 inline-block rounded-xl bg-[#5E2325] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#E74F44]"
+          >
+            Create Profile
+          </Link>
+        </div>
+      </section>
+    );
+  }
+
   // Error State
 
   if (error && appointments.length === 0) {
@@ -226,7 +282,8 @@ function AppointmentsPage() {
         </div>
       )}
 
-      {/* Edit Form */}
+      {/* Edit Appointment */}
+
       {editingAppointment && (
         <Card className="mb-8 border-[#5E2325]/10 bg-white shadow-sm">
           <CardHeader>
@@ -333,7 +390,7 @@ function AppointmentsPage() {
         </Card>
       )}
 
-      {/* Empty State */}
+      {/* No Appointments*/}
       {appointments.length === 0 ? (
         <div className="rounded-2xl bg-white px-6 py-12 text-center shadow-sm">
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#EBE3D1] text-2xl">
@@ -341,18 +398,26 @@ function AppointmentsPage() {
           </div>
 
           <h2 className="mt-5 text-xl font-bold text-[#5E2325]">
-            No appointments yet
+            No Appointments Yet
           </h2>
 
           <p className="mt-2 text-[#284351]/70">
-            You do not have any appointments at the moment.
+            You haven't booked any appointments yet.
           </p>
+
+          <Link
+            to="/doctors"
+            className="mt-6 inline-block rounded-xl bg-[#5E2325] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#E74F44]"
+          >
+            Book an Appointment
+          </Link>
         </div>
       ) : (
         <>
-          {/* Appointment Count */}
           <div className="mb-5">
-            <h2 className="text-xl font-bold text-[#284351]">Appointments</h2>
+            <h2 className="text-xl font-bold text-[#284351]">
+              Your Appointments
+            </h2>
 
             <p className="mt-1 text-sm text-[#284351]/60">
               {appointments.length}{" "}
@@ -360,7 +425,6 @@ function AppointmentsPage() {
             </p>
           </div>
 
-          {/* Appointment Cards */}
           <div className="grid gap-6">
             {appointments.map((appointment) => (
               <AppointmentCard

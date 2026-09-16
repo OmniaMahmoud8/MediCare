@@ -1,38 +1,37 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useSearchParams } from "react-router";
-
 import {
   createAppointment,
   getDoctorAvailability,
   getDoctorById,
 } from "../services/api";
-
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Textarea } from "../components/ui/textarea";
-
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from "../components/ui/card";
+import useAppStore from "../stores/useAppStore";
 
 function BookAppointmentPage() {
   const [searchParams] = useSearchParams();
   const doctorId = searchParams.get("doctorId");
 
+  // Current Patient — Zustand
+
+  const currentPatient = useAppStore((state) => state.currentPatient);
+
   const [doctor, setDoctor] = useState(null);
   const [availability, setAvailability] = useState([]);
-
   const [doctorLoading, setDoctorLoading] = useState(true);
   const [availabilityLoading, setAvailabilityLoading] = useState(true);
-
   const [doctorError, setDoctorError] = useState("");
   const [availabilityError, setAvailabilityError] = useState("");
-
   const [bookingSuccess, setBookingSuccess] = useState(false);
   const [bookingError, setBookingError] = useState("");
 
@@ -43,9 +42,6 @@ function BookAppointmentPage() {
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
-      patientName: "",
-      email: "",
-      phone: "",
       date: "",
       time: "",
       note: "",
@@ -53,7 +49,6 @@ function BookAppointmentPage() {
   });
 
   // Get Doctor
-
 
   useEffect(() => {
     const fetchDoctor = async () => {
@@ -82,7 +77,6 @@ function BookAppointmentPage() {
 
   // Get Doctor Availability
 
-
   useEffect(() => {
     const fetchAvailability = async () => {
       if (!doctorId) {
@@ -98,9 +92,7 @@ function BookAppointmentPage() {
 
         setAvailability(data);
       } catch {
-        setAvailabilityError(
-          "Failed to load available appointment times."
-        );
+        setAvailabilityError("Failed to load available appointment times.");
       } finally {
         setAvailabilityLoading(false);
       }
@@ -109,18 +101,25 @@ function BookAppointmentPage() {
     fetchAvailability();
   }, [doctorId]);
 
-
   // Submit Appointment
 
   const onSubmit = async (formData) => {
+    if (!currentPatient) {
+      setBookingError(
+        "Please create your profile before booking an appointment.",
+      );
+
+      return;
+    }
+
     try {
       setBookingError("");
       setBookingSuccess(false);
 
       const appointmentData = {
-        patientName: formData.patientName.trim(),
-        email: formData.email.trim(),
-        phone: formData.phone.trim(),
+        patientName: currentPatient.name,
+        email: currentPatient.email,
+        phone: currentPatient.phone,
         doctorId: doctor.id,
         doctorName: doctor.name,
         specialty: doctor.specialty,
@@ -136,14 +135,11 @@ function BookAppointmentPage() {
 
       reset();
     } catch {
-      setBookingError(
-        "We couldn't book your appointment. Please try again."
-      );
+      setBookingError("We couldn't book your appointment. Please try again.");
     }
   };
 
   // Loading
-
 
   if (doctorLoading) {
     return (
@@ -160,7 +156,6 @@ function BookAppointmentPage() {
   }
 
   // Doctor Error
-
 
   if (doctorError || !doctor) {
     return (
@@ -191,9 +186,48 @@ function BookAppointmentPage() {
     );
   }
 
+  // No Current Patient
+
+  if (!currentPatient) {
+    return (
+      <section className="flex min-h-[70vh] items-center justify-center px-4">
+        <Card className="w-full max-w-lg">
+          <CardContent className="p-8 text-center sm:p-10">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#EBE3D1] text-2xl">
+              👤
+            </div>
+
+            <h1 className="mt-5 text-2xl font-bold text-[#5E2325]">
+              Create Your Profile First
+            </h1>
+
+            <p className="mt-3 leading-7 text-[#284351]/70">
+              Please create your profile before booking an appointment. Your
+              profile information will be used for your appointment.
+            </p>
+
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:justify-center">
+              <Link
+                to="/profile"
+                className="rounded-xl bg-[#5E2325] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#E74F44]"
+              >
+                Create Profile
+              </Link>
+
+              <Link
+                to={`/doctors/${doctor.id}`}
+                className="rounded-xl border border-[#5E2325]/20 px-5 py-3 text-sm font-semibold text-[#5E2325] transition hover:bg-[#EBE3D1]"
+              >
+                Back to Doctor
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+    );
+  }
 
   // Success
-
 
   if (bookingSuccess) {
     return (
@@ -242,7 +276,6 @@ function BookAppointmentPage() {
   }
   // Booking Page
 
-
   return (
     <section className="mx-auto max-w-5xl">
       <div className="mb-8">
@@ -262,13 +295,12 @@ function BookAppointmentPage() {
         </h1>
 
         <p className="mt-3 max-w-2xl leading-7 text-[#284351]/70">
-          Complete the form below to request an appointment with your
-          selected doctor.
+          Complete the form below to request an appointment with your selected
+          doctor.
         </p>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[300px_1fr]">
-
         {/*Doctor Information*/}
 
         <Card className="h-fit overflow-hidden">
@@ -312,6 +344,11 @@ function BookAppointmentPage() {
             <CardTitle className="text-2xl text-[#5E2325]">
               Patient Information
             </CardTitle>
+
+            <p className="text-sm text-[#284351]/65">
+              Booking as{" "}
+              <span className="font-semibold">{currentPatient.name}</span>
+            </p>
           </CardHeader>
 
           <CardContent>
@@ -320,110 +357,43 @@ function BookAppointmentPage() {
               noValidate
               className="space-y-6"
             >
-              {/* Patient Name */}
+              {/* Current Patient Information */}
 
-              <div>
-                <Label
-                  htmlFor="patientName"
-                  className="mb-2 block text-sm font-semibold text-[#284351]"
-                >
-                  Patient Name
-                </Label>
+              <div className="rounded-xl bg-[#EBE3D0]/50 p-4">
+                <p className="text-sm font-semibold text-[#284351]">
+                  Patient Details
+                </p>
 
-                <Input
-                  id="patientName"
-                  type="text"
-                  placeholder="Enter your full name"
-                  {...register("patientName", {
-                    required: "Patient name is required.",
-                    minLength: {
-                      value: 3,
-                      message: "Name must be at least 3 characters.",
-                    },
-                  })}
-                  className={
-                    errors.patientName
-                      ? "border-[#E74F44]"
-                      : ""
-                  }
-                />
-
-                {errors.patientName && (
-                  <p className="mt-2 text-xs font-medium text-[#E74F44]">
-                    {errors.patientName.message}
-                  </p>
-                )}
-              </div>
-
-              {/* Email + Phone */}
-
-              <div className="grid gap-5 sm:grid-cols-2">
-                <div>
-                  <Label
-                    htmlFor="email"
-                    className="mb-2 block text-sm font-semibold text-[#284351]"
-                  >
-                    Email Address
-                  </Label>
-
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="example@email.com"
-                    {...register("email", {
-                      required: "Email is required.",
-                      pattern: {
-                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                        message:
-                          "Please enter a valid email address.",
-                      },
-                    })}
-                    className={
-                      errors.email
-                        ? "border-[#E74F44]"
-                        : ""
-                    }
-                  />
-
-                  {errors.email && (
-                    <p className="mt-2 text-xs font-medium text-[#E74F44]">
-                      {errors.email.message}
+                <div className="mt-3 grid gap-3 sm:grid-cols-3">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-wide text-[#284351]/50">
+                      Name
                     </p>
-                  )}
-                </div>
 
-                <div>
-                  <Label
-                    htmlFor="phone"
-                    className="mb-2 block text-sm font-semibold text-[#284351]"
-                  >
-                    Phone Number
-                  </Label>
-
-                  <Input
-                    id="phone"
-                    type="tel"
-                    placeholder="Enter your phone number"
-                    {...register("phone", {
-                      required: "Phone number is required.",
-                      pattern: {
-                        value: /^[0-9]{10,15}$/,
-                        message:
-                          "Phone number must contain 10 to 15 digits.",
-                      },
-                    })}
-                    className={
-                      errors.phone
-                        ? "border-[#E74F44]"
-                        : ""
-                    }
-                  />
-
-                  {errors.phone && (
-                    <p className="mt-2 text-xs font-medium text-[#E74F44]">
-                      {errors.phone.message}
+                    <p className="mt-1 text-sm font-medium text-[#284351]">
+                      {currentPatient.name}
                     </p>
-                  )}
+                  </div>
+
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-wide text-[#284351]/50">
+                      Email
+                    </p>
+
+                    <p className="mt-1 break-all text-sm font-medium text-[#284351]">
+                      {currentPatient.email}
+                    </p>
+                  </div>
+
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-wide text-[#284351]/50">
+                      Phone
+                    </p>
+
+                    <p className="mt-1 text-sm font-medium text-[#284351]">
+                      {currentPatient.phone}
+                    </p>
+                  </div>
                 </div>
               </div>
 
@@ -445,11 +415,7 @@ function BookAppointmentPage() {
                     {...register("date", {
                       required: "Appointment date is required.",
                     })}
-                    className={
-                      errors.date
-                        ? "border-[#E74F44]"
-                        : ""
-                    }
+                    className={errors.date ? "border-[#E74F44]" : ""}
                   />
 
                   {errors.date && (
@@ -472,14 +438,9 @@ function BookAppointmentPage() {
                     {...register("time", {
                       required: "Appointment time is required.",
                     })}
-                    disabled={
-                      availabilityLoading ||
-                      availability.length === 0
-                    }
+                    disabled={availabilityLoading || availability.length === 0}
                     className={`h-9 w-full rounded-md border bg-transparent px-3 py-1 text-sm shadow-xs outline-none ${
-                      errors.time
-                        ? "border-[#E74F44]"
-                        : "border-input"
+                      errors.time ? "border-[#E74F44]" : "border-input"
                     }`}
                   >
                     <option value="">
@@ -491,10 +452,7 @@ function BookAppointmentPage() {
                     </option>
 
                     {availability.map((slot) => (
-                      <option
-                        key={slot.id}
-                        value={slot.availableSlots}
-                      >
+                      <option key={slot.id} value={slot.availableSlots}>
                         {slot.availableSlots}
                       </option>
                     ))}
@@ -534,15 +492,10 @@ function BookAppointmentPage() {
                   {...register("note", {
                     maxLength: {
                       value: 300,
-                      message:
-                        "Note cannot exceed 300 characters.",
+                      message: "Note cannot exceed 300 characters.",
                     },
                   })}
-                  className={
-                    errors.note
-                      ? "border-[#E74F44]"
-                      : ""
-                  }
+                  className={errors.note ? "border-[#E74F44]" : ""}
                 />
 
                 {errors.note && (
@@ -573,9 +526,7 @@ function BookAppointmentPage() {
                 }
                 className="w-full bg-[#5E2325] py-5 text-white hover:bg-[#E74F44]"
               >
-                {isSubmitting
-                  ? "Booking Appointment..."
-                  : "Book Appointment"}
+                {isSubmitting ? "Booking Appointment..." : "Book Appointment"}
               </Button>
             </form>
           </CardContent>
