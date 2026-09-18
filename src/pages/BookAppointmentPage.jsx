@@ -143,8 +143,8 @@ function BookAppointmentPage() {
 
   if (doctorLoading) {
     return (
-      <section className="flex min-h-[60vh] items-center justify-center">
-        <div className="text-center">
+      <section className="flex min-h-[60vh] items-center justify-center bg-[#EBE3D0]">
+        <div className="text-center animate-[fadeInUp_0.6s_ease-out]">
           <div className="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-[#5E2325]/20 border-t-[#5E2325]" />
 
           <p className="mt-4 font-medium text-[#284351]">
@@ -159,8 +159,8 @@ function BookAppointmentPage() {
 
   if (doctorError || !doctor) {
     return (
-      <section className="flex min-h-[60vh] items-center justify-center px-4">
-        <Card className="w-full max-w-md">
+      <section className="flex min-h-[60vh] items-center justify-center bg-[#EBE3D0] px-4">
+        <Card className="w-full max-w-md border-[#5E2325]/10 bg-[#EBE3D1] shadow-sm animate-[fadeInUp_0.6s_ease-out]">
           <CardContent className="p-8 text-center">
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#E74F44]/10 text-xl font-bold text-[#E74F44]">
               !
@@ -176,7 +176,7 @@ function BookAppointmentPage() {
 
             <Link
               to="/doctors"
-              className="mt-6 inline-block rounded-xl bg-[#5E2325] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#E74F44]"
+              className="mt-6 inline-block rounded-xl bg-[#5E2325] px-5 py-3 text-sm font-semibold text-[#EBE3D1] transition duration-300 hover:-translate-y-1 hover:bg-[#E74F44]"
             >
               Back to Doctors
             </Link>
@@ -190,10 +190,10 @@ function BookAppointmentPage() {
 
   if (!currentPatient) {
     return (
-      <section className="flex min-h-[70vh] items-center justify-center px-4">
-        <Card className="w-full max-w-lg">
+      <section className="flex min-h-[70vh] items-center justify-center bg-[#EBE3D0] px-4">
+        <Card className="w-full max-w-lg border-[#5E2325]/10 bg-[#EBE3D1] shadow-sm animate-[fadeInUp_0.6s_ease-out]">
           <CardContent className="p-8 text-center sm:p-10">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#EBE3D1] text-2xl">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#EBE3D0] text-2xl">
               👤
             </div>
 
@@ -209,14 +209,14 @@ function BookAppointmentPage() {
             <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:justify-center">
               <Link
                 to="/profile"
-                className="rounded-xl bg-[#5E2325] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#E74F44]"
+                className="rounded-xl bg-[#5E2325] px-5 py-3 text-sm font-semibold text-[#EBE3D1] transition duration-300 hover:-translate-y-1 hover:bg-[#E74F44]"
               >
                 Create Profile
               </Link>
 
               <Link
                 to={`/doctors/${doctor.id}`}
-                className="rounded-xl border border-[#5E2325]/20 px-5 py-3 text-sm font-semibold text-[#5E2325] transition hover:bg-[#EBE3D1]"
+                className="rounded-xl border border-[#5E2325]/20 bg-[#EBE3D0] px-5 py-3 text-sm font-semibold text-[#5E2325] transition duration-300 hover:-translate-y-1 hover:bg-[#EBE3D1]"
               >
                 Back to Doctor
               </Link>
@@ -231,10 +231,10 @@ function BookAppointmentPage() {
 
   if (bookingSuccess) {
     return (
-      <section className="flex min-h-[70vh] items-center justify-center px-4">
-        <Card className="w-full max-w-lg">
+      <section className="flex min-h-[70vh] items-center justify-center bg-[#EBE3D0] px-4">
+        <Card className="w-full max-w-lg border-[#5E2325]/10 bg-[#EBE3D1] shadow-sm animate-[fadeInUp_0.6s_ease-out]">
           <CardContent className="p-8 text-center sm:p-10">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-2xl text-green-700">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#284351]/10 text-2xl text-[#284351]">
               ✓
             </div>
 
@@ -257,14 +257,14 @@ function BookAppointmentPage() {
             <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:justify-center">
               <Link
                 to="/appointments"
-                className="rounded-xl bg-[#5E2325] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#E74F44]"
+                className="rounded-xl bg-[#5E2325] px-5 py-3 text-sm font-semibold text-[#EBE3D1] transition duration-300 hover:-translate-y-1 hover:bg-[#E74F44]"
               >
                 View My Appointments
               </Link>
 
               <Link
                 to="/doctors"
-                className="rounded-xl border border-[#5E2325]/20 px-5 py-3 text-sm font-semibold text-[#5E2325] transition hover:bg-[#EBE3D1]"
+                className="rounded-xl border border-[#5E2325]/20 bg-[#EBE3D0] px-5 py-3 text-sm font-semibold text-[#5E2325] transition duration-300 hover:-translate-y-1 hover:bg-[#EBE3D1]"
               >
                 Find Another Doctor
               </Link>
@@ -274,263 +274,268 @@ function BookAppointmentPage() {
       </section>
     );
   }
+
   // Booking Page
 
   return (
-    <section className="mx-auto max-w-5xl">
-      <div className="mb-8">
-        <Link
-          to={`/doctors/${doctor.id}`}
-          className="inline-flex items-center gap-2 text-sm font-semibold text-[#5E2325] transition hover:text-[#E74F44]"
-        >
-          ← Back to Doctor
-        </Link>
+    <section className="min-h-[70vh] bg-[#EBE3D0] px-4 py-10 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-5xl">
+        <div className="mb-8 animate-[fadeInUp_0.6s_ease-out]">
+          <Link
+            to={`/doctors/${doctor.id}`}
+            className="inline-flex items-center gap-2 text-sm font-semibold text-[#5E2325] transition hover:text-[#E74F44]"
+          >
+            ← Back to Doctor
+          </Link>
 
-        <p className="mt-6 text-sm font-semibold uppercase tracking-wider text-[#E74F44]">
-          Appointment Booking
-        </p>
+          <p className="mt-6 text-sm font-semibold uppercase tracking-[0.18em] text-[#E74F44]">
+            Appointment Booking
+          </p>
 
-        <h1 className="mt-2 text-3xl font-bold text-[#5E2325] sm:text-4xl">
-          Book Your Appointment
-        </h1>
+          <h1 className="mt-2 text-3xl font-bold text-[#5E2325] sm:text-4xl">
+            Book Your Appointment
+          </h1>
 
-        <p className="mt-3 max-w-2xl leading-7 text-[#284351]/70">
-          Complete the form below to request an appointment with your selected
-          doctor.
-        </p>
-      </div>
+          <p className="mt-3 max-w-2xl leading-7 text-[#284351]/70">
+            Complete the form below to request an appointment with your selected
+            doctor.
+          </p>
+        </div>
 
-      <div className="grid gap-6 lg:grid-cols-[300px_1fr]">
-        {/*Doctor Information*/}
+        <div className="grid gap-6 lg:grid-cols-[300px_1fr]">
+          {/* Doctor Information */}
 
-        <Card className="h-fit overflow-hidden">
-          <div className="bg-[#EBE3D1]">
-            <img
-              src={doctor.image}
-              alt={doctor.name}
-              className="h-64 w-full object-cover"
-            />
-          </div>
-
-          <CardContent className="p-6">
-            <p className="text-sm font-semibold text-[#E74F44]">
-              {doctor.specialty}
-            </p>
-
-            <h2 className="mt-1 text-xl font-bold text-[#5E2325]">
-              {doctor.name}
-            </h2>
-
-            <p className="mt-2 text-sm leading-6 text-[#284351]/70">
-              {doctor.location}
-            </p>
-
-            <div className="mt-5 border-t border-[#284351]/10 pt-5">
-              <p className="text-xs font-semibold uppercase tracking-wide text-[#284351]/50">
-                Consultation Fee
-              </p>
-
-              <p className="mt-1 font-bold text-[#284351]">
-                {doctor.consultationFee}
-              </p>
+          <Card className="h-fit overflow-hidden border-[#5E2325]/10 bg-[#EBE3D1] shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md animate-[fadeInUp_0.8s_ease-out]">
+            <div className="overflow-hidden bg-[#EBE3D1]">
+              <img
+                src={doctor.image}
+                alt={doctor.name}
+                className="h-64 w-full object-cover object-[center_35%] transition duration-700 hover:scale-105"
+              />
             </div>
-          </CardContent>
-        </Card>
 
-        {/*Booking Form*/}
+            <CardContent className="p-6">
+              <p className="text-sm font-semibold text-[#E74F44]">
+                {doctor.specialty}
+              </p>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-2xl text-[#5E2325]">
-              Patient Information
-            </CardTitle>
+              <h2 className="mt-1 text-xl font-bold text-[#5E2325]">
+                {doctor.name}
+              </h2>
 
-            <p className="text-sm text-[#284351]/65">
-              Booking as{" "}
-              <span className="font-semibold">{currentPatient.name}</span>
-            </p>
-          </CardHeader>
+              <p className="mt-2 text-sm leading-6 text-[#284351]/70">
+                {doctor.location}
+              </p>
 
-          <CardContent>
-            <form
-              onSubmit={handleSubmit(onSubmit)}
-              noValidate
-              className="space-y-6"
-            >
-              {/* Current Patient Information */}
-
-              <div className="rounded-xl bg-[#EBE3D0]/50 p-4">
-                <p className="text-sm font-semibold text-[#284351]">
-                  Patient Details
+              <div className="mt-5 border-t border-[#284351]/10 pt-5">
+                <p className="text-xs font-semibold uppercase tracking-wide text-[#284351]/50">
+                  Consultation Fee
                 </p>
 
-                <div className="mt-3 grid gap-3 sm:grid-cols-3">
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-wide text-[#284351]/50">
-                      Name
-                    </p>
+                <p className="mt-1 font-bold text-[#284351]">
+                  {doctor.consultationFee}
+                </p>
+              </div>
+            </CardContent>
+          </Card>
 
-                    <p className="mt-1 text-sm font-medium text-[#284351]">
-                      {currentPatient.name}
-                    </p>
-                  </div>
+          {/* Booking Form */}
 
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-wide text-[#284351]/50">
-                      Email
-                    </p>
+          <Card className="border-[#5E2325]/10 bg-[#EBE3D1] shadow-sm animate-[fadeInUp_1s_ease-out]">
+            <CardHeader>
+              <CardTitle className="text-2xl text-[#5E2325]">
+                Patient Information
+              </CardTitle>
 
-                    <p className="mt-1 break-all text-sm font-medium text-[#284351]">
-                      {currentPatient.email}
-                    </p>
-                  </div>
+              <p className="text-sm text-[#284351]/65">
+                Booking as{" "}
+                <span className="font-semibold">{currentPatient.name}</span>
+              </p>
+            </CardHeader>
 
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-wide text-[#284351]/50">
-                      Phone
-                    </p>
+            <CardContent>
+              <form
+                onSubmit={handleSubmit(onSubmit)}
+                noValidate
+                className="space-y-6"
+              >
+                {/* Current Patient Information */}
 
-                    <p className="mt-1 text-sm font-medium text-[#284351]">
-                      {currentPatient.phone}
-                    </p>
+                <div className="rounded-xl bg-[#EBE3D0] p-4">
+                  <p className="text-sm font-semibold text-[#284351]">
+                    Patient Details
+                  </p>
+
+                  <div className="mt-3 grid gap-3 sm:grid-cols-3">
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-wide text-[#284351]/50">
+                        Name
+                      </p>
+
+                      <p className="mt-1 text-sm font-medium text-[#284351]">
+                        {currentPatient.name}
+                      </p>
+                    </div>
+
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-wide text-[#284351]/50">
+                        Email
+                      </p>
+
+                      <p className="mt-1 break-all text-sm font-medium text-[#284351]">
+                        {currentPatient.email}
+                      </p>
+                    </div>
+
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-wide text-[#284351]/50">
+                        Phone
+                      </p>
+
+                      <p className="mt-1 text-sm font-medium text-[#284351]">
+                        {currentPatient.phone}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Date + Time */}
+                {/* Date + Time */}
 
-              <div className="grid gap-5 sm:grid-cols-2">
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <div>
+                    <Label
+                      htmlFor="date"
+                      className="mb-2 block text-sm font-semibold text-[#284351]"
+                    >
+                      Appointment Date
+                    </Label>
+
+                    <Input
+                      id="date"
+                      type="date"
+                      min={new Date().toISOString().split("T")[0]}
+                      {...register("date", {
+                        required: "Appointment date is required.",
+                      })}
+                      className={errors.date ? "border-[#E74F44]" : ""}
+                    />
+
+                    {errors.date && (
+                      <p className="mt-2 text-xs font-medium text-[#E74F44]">
+                        {errors.date.message}
+                      </p>
+                    )}
+                  </div>
+
+                  <div>
+                    <Label
+                      htmlFor="time"
+                      className="mb-2 block text-sm font-semibold text-[#284351]"
+                    >
+                      Appointment Time
+                    </Label>
+
+                    <select
+                      id="time"
+                      {...register("time", {
+                        required: "Appointment time is required.",
+                      })}
+                      disabled={
+                        availabilityLoading || availability.length === 0
+                      }
+                      className={`h-9 w-full rounded-md border border-[#284351]/20 bg-[#EBE3D0] px-3 py-1 text-sm text-[#284351] shadow-xs outline-none ${
+                        errors.time ? "border-[#E74F44]" : ""
+                      }`}
+                    >
+                      <option value="">
+                        {availabilityLoading
+                          ? "Loading available times..."
+                          : availability.length === 0
+                            ? "No available times"
+                            : "Select a time"}
+                      </option>
+
+                      {availability.map((slot) => (
+                        <option key={slot.id} value={slot.availableSlots}>
+                          {slot.availableSlots}
+                        </option>
+                      ))}
+                    </select>
+
+                    {availabilityError && (
+                      <p className="mt-2 text-xs font-medium text-[#E74F44]">
+                        {availabilityError}
+                      </p>
+                    )}
+
+                    {errors.time && (
+                      <p className="mt-2 text-xs font-medium text-[#E74F44]">
+                        {errors.time.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Note */}
+
                 <div>
                   <Label
-                    htmlFor="date"
+                    htmlFor="note"
                     className="mb-2 block text-sm font-semibold text-[#284351]"
                   >
-                    Appointment Date
+                    Note
+                    <span className="ml-1 font-normal text-[#284351]/50">
+                      (Optional)
+                    </span>
                   </Label>
 
-                  <Input
-                    id="date"
-                    type="date"
-                    min={new Date().toISOString().split("T")[0]}
-                    {...register("date", {
-                      required: "Appointment date is required.",
+                  <Textarea
+                    id="note"
+                    rows={4}
+                    placeholder="Add any notes or symptoms you want the doctor to know..."
+                    {...register("note", {
+                      maxLength: {
+                        value: 300,
+                        message: "Note cannot exceed 300 characters.",
+                      },
                     })}
-                    className={errors.date ? "border-[#E74F44]" : ""}
+                    className={errors.note ? "border-[#E74F44]" : ""}
                   />
 
-                  {errors.date && (
+                  {errors.note && (
                     <p className="mt-2 text-xs font-medium text-[#E74F44]">
-                      {errors.date.message}
+                      {errors.note.message}
                     </p>
                   )}
                 </div>
 
-                <div>
-                  <Label
-                    htmlFor="time"
-                    className="mb-2 block text-sm font-semibold text-[#284351]"
-                  >
-                    Appointment Time
-                  </Label>
+                {/* API Error */}
 
-                  <select
-                    id="time"
-                    {...register("time", {
-                      required: "Appointment time is required.",
-                    })}
-                    disabled={availabilityLoading || availability.length === 0}
-                    className={`h-9 w-full rounded-md border bg-transparent px-3 py-1 text-sm shadow-xs outline-none ${
-                      errors.time ? "border-[#E74F44]" : "border-input"
-                    }`}
-                  >
-                    <option value="">
-                      {availabilityLoading
-                        ? "Loading available times..."
-                        : availability.length === 0
-                          ? "No available times"
-                          : "Select a time"}
-                    </option>
-
-                    {availability.map((slot) => (
-                      <option key={slot.id} value={slot.availableSlots}>
-                        {slot.availableSlots}
-                      </option>
-                    ))}
-                  </select>
-
-                  {availabilityError && (
-                    <p className="mt-2 text-xs font-medium text-[#E74F44]">
-                      {availabilityError}
+                {bookingError && (
+                  <div className="rounded-xl border border-[#E74F44]/20 bg-[#E74F44]/10 p-4">
+                    <p className="text-sm font-medium text-[#E74F44]">
+                      {bookingError}
                     </p>
-                  )}
-
-                  {errors.time && (
-                    <p className="mt-2 text-xs font-medium text-[#E74F44]">
-                      {errors.time.message}
-                    </p>
-                  )}
-                </div>
-              </div>
-
-              {/* Note */}
-
-              <div>
-                <Label
-                  htmlFor="note"
-                  className="mb-2 block text-sm font-semibold text-[#284351]"
-                >
-                  Note
-                  <span className="ml-1 font-normal text-[#284351]/50">
-                    (Optional)
-                  </span>
-                </Label>
-
-                <Textarea
-                  id="note"
-                  rows={4}
-                  placeholder="Add any notes or symptoms you want the doctor to know..."
-                  {...register("note", {
-                    maxLength: {
-                      value: 300,
-                      message: "Note cannot exceed 300 characters.",
-                    },
-                  })}
-                  className={errors.note ? "border-[#E74F44]" : ""}
-                />
-
-                {errors.note && (
-                  <p className="mt-2 text-xs font-medium text-[#E74F44]">
-                    {errors.note.message}
-                  </p>
+                  </div>
                 )}
-              </div>
 
-              {/* API Error */}
+                {/* Submit */}
 
-              {bookingError && (
-                <div className="rounded-xl border border-[#E74F44]/20 bg-[#E74F44]/10 p-4">
-                  <p className="text-sm font-medium text-[#E74F44]">
-                    {bookingError}
-                  </p>
-                </div>
-              )}
-
-              {/* Submit */}
-
-              <Button
-                type="submit"
-                disabled={
-                  isSubmitting ||
-                  availabilityLoading ||
-                  availability.length === 0
-                }
-                className="w-full bg-[#5E2325] py-5 text-white hover:bg-[#E74F44]"
-              >
-                {isSubmitting ? "Booking Appointment..." : "Book Appointment"}
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
+                <Button
+                  type="submit"
+                  disabled={
+                    isSubmitting ||
+                    availabilityLoading ||
+                    availability.length === 0
+                  }
+                  className="w-full bg-[#5E2325] py-5 text-[#EBE3D1] transition duration-300 hover:-translate-y-1 hover:bg-[#E74F44]"
+                >
+                  {isSubmitting ? "Booking Appointment..." : "Book Appointment"}
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </section>
   );

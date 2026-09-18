@@ -8,34 +8,33 @@ const useAppStore = create(
 
       currentPatient: null,
 
-      // Create / Set Current Patient
-
       setCurrentPatient: (patient) =>
         set({
           currentPatient: patient,
         }),
 
-      // Update Current Patient
-
-      updateCurrentPatient: (updatedData) =>
-        set((state) => ({
-          currentPatient: state.currentPatient
-            ? {
-                ...state.currentPatient,
-                ...updatedData,
-              }
-            : updatedData,
-        })),
-
-      // Clear Profile
-
       clearCurrentPatient: () =>
         set({
           currentPatient: null,
         }),
+
+      // Favorite Doctors
+
+      favoriteDoctors: [],
+
+      toggleFavoriteDoctor: (doctorId) =>
+        set((state) => {
+          const exists = state.favoriteDoctors.includes(doctorId);
+
+          return {
+            favoriteDoctors: exists
+              ? state.favoriteDoctors.filter((id) => id !== doctorId)
+              : [...state.favoriteDoctors, doctorId],
+          };
+        }),
     }),
     {
-      name: "medicare-current-patient",
+      name: "medicare-storage",
     },
   ),
 );

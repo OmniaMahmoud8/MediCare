@@ -3,7 +3,7 @@ import { Button } from "./ui/button";
 
 function AppointmentCard({ appointment, onEdit, onDelete, isDeleting }) {
   return (
-    <Card className="overflow-hidden border-[#5E2325]/10 bg-white shadow-sm transition hover:shadow-md">
+    <Card className="overflow-hidden border-[#5E2325]/10 bg-[#EBE3D1] shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md">
       <CardContent className="p-6">
         <div className="flex flex-col gap-5">
           {/* Doctor Information */}
@@ -18,55 +18,59 @@ function AppointmentCard({ appointment, onEdit, onDelete, isDeleting }) {
               </h2>
             </div>
 
-            <span className="w-fit rounded-full bg-[#EBE3D1] px-3 py-1 text-sm font-semibold text-[#284351]">
+            <span className="w-fit rounded-full bg-[#EBE3D0] px-3 py-1 text-sm font-semibold text-[#284351]">
               {appointment.status}
             </span>
           </div>
 
           {/* Appointment Information */}
-          <div className="grid gap-4 rounded-xl bg-[#EBE3D0]/40 p-4 sm:grid-cols-2">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-wide text-[#284351]/50">
-                Patient
-              </p>
 
-              <p className="mt-1 font-medium text-[#284351]">
-                {appointment.patientName}
-              </p>
-            </div>
+          <div className="grid gap-4 rounded-xl bg-[#EBE3D0] p-4">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wide text-[#284351]/50">
+                  Patient
+                </p>
 
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-wide text-[#284351]/50">
-                Phone
-              </p>
+                <p className="mt-1 font-medium text-[#284351]">
+                  {appointment.patientName}
+                </p>
+              </div>
 
-              <p className="mt-1 font-medium text-[#284351]">
-                {appointment.phone}
-              </p>
-            </div>
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wide text-[#284351]/50">
+                  Phone
+                </p>
 
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-wide text-[#284351]/50">
-                Date
-              </p>
+                <p className="mt-1 font-medium text-[#284351]">
+                  {appointment.phone}
+                </p>
+              </div>
 
-              <p className="mt-1 font-medium text-[#284351]">
-                {appointment.date}
-              </p>
-            </div>
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wide text-[#284351]/50">
+                  Date
+                </p>
 
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-wide text-[#284351]/50">
-                Time
-              </p>
+                <p className="mt-1 font-medium text-[#284351]">
+                  {appointment.date}
+                </p>
+              </div>
 
-              <p className="mt-1 font-medium text-[#284351]">
-                {appointment.time}
-              </p>
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wide text-[#284351]/50">
+                  Time
+                </p>
+
+                <p className="mt-1 font-medium text-[#284351]">
+                  {appointment.time}
+                </p>
+              </div>
             </div>
           </div>
 
           {/* Note */}
+
           {appointment.note && (
             <div>
               <p className="text-sm font-semibold text-[#284351]">Note</p>
@@ -78,11 +82,12 @@ function AppointmentCard({ appointment, onEdit, onDelete, isDeleting }) {
           )}
 
           {/* Actions */}
+
           <div className="flex flex-col gap-3 border-t border-[#284351]/10 pt-5 sm:flex-row">
             <Button
               type="button"
               onClick={() => onEdit(appointment)}
-              className="flex-1 bg-[#284351] text-white hover:bg-[#5E2325]"
+              className="flex-1 bg-[#284351] text-[#EBE3D1] transition duration-300 hover:-translate-y-1 hover:bg-[#5E2325]"
             >
               Edit / Reschedule
             </Button>
@@ -91,7 +96,7 @@ function AppointmentCard({ appointment, onEdit, onDelete, isDeleting }) {
               type="button"
               onClick={() => onDelete(appointment)}
               disabled={isDeleting}
-              className="flex-1 bg-[#E74F44] text-white hover:bg-[#5E2325]"
+              className="flex-1 bg-[#E74F44] text-[#EBE3D1] transition duration-300 hover:-translate-y-1 hover:bg-[#5E2325]"
             >
               {isDeleting ? "Deleting..." : "Cancel Appointment"}
             </Button>
